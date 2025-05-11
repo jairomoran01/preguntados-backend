@@ -7,7 +7,13 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: [
+    'https://preguntados-frontend-five.vercel.app',
+    'http://localhost:3000'
+  ],
+  credentials: true
+}));
 app.use(express.json());
 
 // Conexión a MongoDB
@@ -21,6 +27,14 @@ const gamesRouter = require('./routes/games');
 
 app.use('/api/questions', questionsRouter);
 app.use('/api/games', gamesRouter);
+
+// Servir archivos estáticos en producción
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/dist'));
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'));
+  });
+}
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en puerto ${PORT}`);
