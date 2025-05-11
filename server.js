@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3000;
 app.use(cors({
   origin: [
     'https://preguntados-frontend-five.vercel.app',
-    'http://localhost:3000'
+    'https://preguntados-backend.vercel.app'
   ],
   credentials: true
 }));
